@@ -1,7 +1,8 @@
-import { task as data, task } from "./data/task";
-import { TaskList } from "./components/TaskList";
 import { useEffect, useState } from "react";
-import { TaskForm } from "./components/TaskForm";
+import { task as data } from "./data/task";
+import { TaskList } from "./components/tasks/TaskList";
+
+import { TaskForm } from "./components/tasks/TaskForm";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -14,21 +15,25 @@ function App() {
     return <h3>No hay tareas aun</h3>;
   }
 
-  function createTask(setTitle, setDescription) {
+  function createTask(task) {
     setTasks([
       ...tasks,
       {
         id: tasks.length,
-        title: setTitle,
-        description: setDescription,
+        title: task.title,
+        description: task.description,
       },
     ]);
+  }
+
+  function deleteTask(taskId) {
+    setTasks(tasks.filter((task) => task.id !== taskId));
   }
 
   return (
     <>
       <TaskForm createTask={createTask} />
-      <TaskList tasks={tasks}></TaskList>
+      <TaskList tasks={tasks} deleteTask={deleteTask} />
     </>
   );
 }
